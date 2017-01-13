@@ -16,7 +16,7 @@ class JokesController extends Controller
     {
         $jokes = Joke::all();
         return response()->json([
-            'message' => $jokes
+            'data' => $jokes
         ], 200);
     }
 
@@ -49,7 +49,23 @@ class JokesController extends Controller
      */
     public function show($id)
     {
-        //
+        $joke = Joke::with([
+            'User' => function ($query) {
+                $query->select('id', 'name');
+            }
+        ])->find($id);
+
+        if (!$joke) {
+            return response()->json([
+                'error' => [
+                    'message' => 'Joke does not exist'
+                ]
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $joke
+        ], 200);
     }
 
     /**

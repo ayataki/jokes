@@ -5,6 +5,8 @@ namespace jokes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+use jokes\Joke;
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -26,4 +28,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function jokes () {
+        return $this->hasMany('jokes\Joke');
+    }
 }
